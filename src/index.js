@@ -3,3 +3,8 @@
 
 // o entrar a other y elegir
 //  dream_world -> front_default o home -> front_default o official-artwork -> front_default
+
+document.addEventListener("DOMContentLoaded", function () {
+    const searchButton = document.querySelector(".btn-secondary");
+    searchButton.addEventListener("click", fetchData);
+  });

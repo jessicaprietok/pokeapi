@@ -47,3 +47,59 @@ function getJSONData(url){
         return result;
     });
 }
+
+
+function fetchData() {
+  const seleccionado = document.querySelector(".form-select");
+  const valorSeleccionado = seleccionado.value;
+
+  let apiUrl = "";
+  let imageUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/";
+
+  switch (valorSeleccionado) {
+    case "1":
+      apiUrl = pokemon_URL;
+      break;
+    case "2":
+      apiUrl = ability_URL;
+      break;
+    case "3":
+      apiUrl = region_URL;
+      break;
+    default:
+      return;
+  }
+
+  getJSONData(apiUrl)
+    .then((result) => {
+      if (result.status === "ok") {
+        const listaData = result.data.results;
+        const muestraContainer = document.querySelector(".container-muestra");
+        muestraContainer.innerHTML = "";
+
+        listaData.forEach((item) => {
+          const listaItems = document.createElement("div");
+          listaItems.classList.add("list-item");
+
+          if (valorSeleccionado === "1") {
+            const pokemonId = item.url.split("/")[6];
+            const image = document.createElement("img");
+            image.src = `${imageUrl}${pokemonId}.png`;
+            image.alt = item.name;
+            listaItems.appendChild(image);
+          }
+
+          const nameElement = document.createElement("strong");
+          nameElement.textContent = item.name;
+          listaItems.appendChild(nameElement);
+
+          muestraContainer.appendChild(listaItems);
+        });
+      } else {
+        console.error("Error:", result.data);
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+}
